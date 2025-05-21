@@ -19,15 +19,15 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-interface ProductsTableProps {
+interface ProductsTabTableProps {
     data: Product[]
 }
 
-export default function ProductsTable({ data }: ProductsTableProps) {
+export default function ProductsTabTable({ data }: ProductsTabTableProps) {
     const table = useReactTable({
         data,
         getCoreRowModel: getCoreRowModel(),
-        columns
+        columns,
     })
 
     return (
@@ -74,7 +74,7 @@ export default function ProductsTable({ data }: ProductsTableProps) {
                                 colSpan={columns.length}
                                 className="h-24 text-center text-foreground"
                             >
-                                No results.
+                                Sin resultados.
                             </TableCell>
                         </TableRow>
                     )}

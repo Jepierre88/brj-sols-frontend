@@ -1,6 +1,6 @@
 // TODO: Add type for product
 export type Product = {
-    id: string
+    id: number
     name: string
     price: number
     description: string

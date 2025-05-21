@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import CartList from '@/components/cart/CartList'
+
 
 export default function Home() {
   return (

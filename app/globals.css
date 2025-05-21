@@ -119,6 +119,8 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+  --tertiary: oklch(0.21 0.006 285.885);
+  --tertiary-foreground: #09f;
 }
 
 @layer base {
@@ -128,4 +130,22 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: var(--primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

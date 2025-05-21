@@ -85,7 +85,7 @@ export default function NavBar() {
                                                     <DropdownMenuItem
                                                         key={company.id}
                                                         onClick={() => handleCompanyChange(company.id)}
-                                                        className={`cursor-pointer flex justify-between items-center ${isSelected ? "bg-yellow-50 text-black-700 font-medium pointer-events-none" : ""}`}
+                                                        className={`cursor-pointer flex justify-between items-center ${isSelected ? "bg-background-soft text-foreground font-medium pointer-events-none" : ""}`}
                                                     >
                                                         <span className="flex items-center gap-2 text-sm">{company.nameCompany}</span>
                                                         {isSelected && <Check size={16} className="text-yellow-700" />}
