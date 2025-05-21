@@ -5,6 +5,7 @@ import { CONSTANTS } from "@/config/constants"
 import { loginSchema } from "@/schemas/auth/login"
 import { JWT } from "next-auth/jwt"
 import { Session } from "next-auth"
+import { Company } from "@/types/Company"
 
 
 class NotFoundCredentials extends CredentialsSignin {
@@ -13,6 +14,38 @@ class NotFoundCredentials extends CredentialsSignin {
 
 class ServerError extends CredentialsSignin {
     code = "Error interno del servidor"
+}
+
+
+
+declare module "next-auth" {
+
+    interface User {
+        token: string
+        firstName: string
+        lastName: string
+        email: string
+        cellPhoneNumber: string
+        companies: Company[]
+    }
+    interface Session {
+        user: User
+        selectedCompany: Company
+    }
+
+}
+declare module "next-auth/jwt" {
+    interface JWT {
+        user: {
+            token: string
+            firstName: string
+            lastName: string
+            email: string
+            cellPhoneNumber: string
+            companies: Company[]
+        },
+        selectedCompany: Company
+    }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -32,9 +65,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     password
                 }).then(res => {
                     user = res.data
+                    user.companies = [
+                        ...user.companies,
+                        {
+                            id: "2",
+                            nameCompany: "Company 1",
+                            address: "Address 1",
+                            description: "Description 1",
+                        }
+                    ]
+                    console.log(user)
                 }).catch(err => {
-                    console.log(err)
                     if (err instanceof AxiosError) {
+                        console.log(err.response?.data)
                         throw handleError(err)
                     } else {
                         throw new ServerError()
@@ -50,14 +93,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async jwt({ token, user }): Promise<JWT> {
+        async jwt({ token, user, trigger, session }): Promise<JWT> {
+            if (trigger === "update" && session?.selectedCompany) {
+                token.selectedCompany = session.selectedCompany;
+            }
             if (user) {
                 token.user = user
+                token.selectedCompany = user.companies[0]
             }
             return token
         },
         async session({ session, token }: { session: Session, token: JWT }): Promise<Session> {
             session.user = token.user as any
+            session.selectedCompany = token.selectedCompany
             return session
         },
     },
@@ -67,8 +115,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 const handleError = (error: AxiosError): NotFoundCredentials | ServerError => {
     if (error.status === 401) {
         return new NotFoundCredentials()
-    } else {
+    } else if (error.status === 500) {
         return new ServerError()
+    } else {
+        return new NotFoundCredentials()
     }
 
 }
