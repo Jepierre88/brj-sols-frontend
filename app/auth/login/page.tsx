@@ -42,6 +42,9 @@ export default function Login() {
 
     return (
         <section className="flex flex-col items-center justify-center h-screen">
+            <h1 className="text-5xl font-extrabold font-mono bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[2px_2px_0px_rgba(0,0,0,0.5)] mb-8 select-none">
+                Cajix
+            </h1>
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="border border-gray-200 rounded-lg p-4 w-96">
@@ -54,7 +57,7 @@ export default function Login() {
                             <FormMessage>{form.formState.errors.email?.message}</FormMessage>
                         </FormItem>
                     )} />
-                    <Separator className="my-4" />
+                    <Separator className="my-4 bg-foreground/15" />
                     <FormField control={form.control} name="password" render={({ field }) => (
                         <FormItem>
                             <FormLabel>Contraseña</FormLabel>

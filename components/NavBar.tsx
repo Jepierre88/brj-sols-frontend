@@ -42,7 +42,7 @@ export default function NavBar() {
             {/* <SidebarHeader>
                 <h1>Cajix</h1>
             </SidebarHeader> */}
-            <SidebarContent>
+            <SidebarContent className="bg-background-soft">
                 <SidebarGroup>
                     <SidebarMenu>
                         {items.map((item) => (
@@ -65,7 +65,7 @@ export default function NavBar() {
                     <SidebarMenuItem>
                         <DropdownMenu >
                             <DropdownMenuTrigger asChild className="cursor-pointer">
-                                <SidebarMenuButton className="cursor-pointer hover:bg-gray-100">
+                                <SidebarMenuButton className="cursor-pointer hover:bg-background/90">
                                     <User2 /> {session?.user.firstName} {session?.user.lastName}                                    <ChevronUp className="ml-auto" />
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
@@ -73,7 +73,7 @@ export default function NavBar() {
 
                                 <DropdownMenuSub>
                                     <DropdownMenuSubTrigger>
-                                        <SidebarMenuButton className="cursor-pointer w-full hover:bg-gray-100">
+                                        <SidebarMenuButton className="w-full">
                                             <span className="flex items-center gap-1 text-nowrap text-base"><GitCompareArrows size={20} />Cambiar de negocio</span>
                                         </SidebarMenuButton>
                                     </DropdownMenuSubTrigger>
@@ -96,7 +96,7 @@ export default function NavBar() {
                                     </DropdownMenuSubContent>
                                 </DropdownMenuSub>
                                 <DropdownMenuItem className={`cursor-pointer flex justify-between items-center`}>
-                                    <SidebarMenuButton className="cursor-pointer w-full hover:bg-gray-100" onClick={handleLogout}>
+                                    <SidebarMenuButton className="w-full" onClick={handleLogout}>
                                         <span className="flex items-center gap-1 text-nowrap text-base">
                                             <LogOutIcon size={20} />
                                             Cerrar sesión

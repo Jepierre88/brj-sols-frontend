@@ -23,9 +23,7 @@ interface ProductsTableProps {
     data: Product[]
 }
 
-export default function ProductsTable({
-    data,
-}: ProductsTableProps) {
+export default function ProductsTable({ data }: ProductsTableProps) {
     const table = useReactTable({
         data,
         getCoreRowModel: getCoreRowModel(),
@@ -33,35 +31,38 @@ export default function ProductsTable({
     })
 
     return (
-        <div className="rounded-md border bg-red-50">
-            <Table className="rounded-md border">
-                <TableHeader>
+        <div className="rounded-2xl border bg-background shadow-md overflow-hidden">
+            <Table className="w-full text-sm">
+                <TableHeader className="bg-gray-100">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </TableHead>
-                                )
-                            })}
+                            {headerGroup.headers.map((header) => (
+                                <TableHead
+                                    key={header.id}
+                                    className="px-6 py-4 text-gray-800 font-semibold text-left tracking-wide text-sm"
+                                >
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(header.column.columnDef.header, header.getContext())}
+                                </TableHead>
+                            ))}
                         </TableRow>
                     ))}
                 </TableHeader>
+
                 <TableBody>
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                className="hover:bg-gray-50 transition-colors duration-150"
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell
+                                        key={cell.id}
+                                        className="px-6 py-5 text-gray-700 whitespace-nowrap"
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
@@ -69,7 +70,10 @@ export default function ProductsTable({
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                            <TableCell
+                                colSpan={columns.length}
+                                className="h-24 text-center text-gray-500"
+                            >
                                 No results.
                             </TableCell>
                         </TableRow>

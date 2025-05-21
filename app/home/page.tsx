@@ -12,7 +12,7 @@ export default async function Home() {
             <section className="flex-[0.7] h-dvh"><h2>POS checkout</h2>
                 <h2>{session?.selectedCompany?.nameCompany}</h2>
             </section>
-            <section className="flex-[0.3] flex flex-col h-dvh px-2 shadow-2xl bg-white rounded-l-3xl">
+            <section className="flex-[0.3] flex flex-col h-dvh px-2 shadow-md bg-background-soft rounded-l-3xl">
                 <header className="flex justify-between items-center text-tertiary-foreground my-7 px-3">
                     <h2>{session?.user?.firstName} {session?.user?.lastName}</h2>
                     <DropdownMenu>
@@ -21,7 +21,7 @@ export default async function Home() {
                         </DropdownMenuTrigger>
                     </DropdownMenu>
                 </header>
-                <Separator className="my-2" />
+                <Separator className="my-4 bg-foreground/15" />
                 <CartList />
             </section>
         </>

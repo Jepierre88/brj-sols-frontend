@@ -12,7 +12,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
             <SidebarProvider defaultOpen={defaultOpen}>
                 <SessionProvider>
                     <NavBar />
-                    <main className="flex flex-row row-start-2 items-center sm:items-start flex-1 bg-neutral-200">
+                    <main className="flex flex-row row-start-2 items-center sm:items-start flex-1 bg-background">
                         <SidebarTrigger />
                         {children}
                     </main>

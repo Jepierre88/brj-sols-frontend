@@ -6,7 +6,9 @@ import { privateRoutes } from "./lib/routes"
 export default auth(async function middleware(req) {
     const { nextUrl } = req
     const isLoggedIn = await auth()
+
     const isPrivateRoute = privateRoutes.includes(nextUrl.pathname)
+
     const isAuthRoute = nextUrl.pathname.includes("/auth")
     const isApiRoute = nextUrl.pathname.includes("/api")
 

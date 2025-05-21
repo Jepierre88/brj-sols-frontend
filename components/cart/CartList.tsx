@@ -27,9 +27,9 @@ export default function CartList() {
                                 <div className='flex justify-between w-full '>
                                     <div>
                                         <h3 className='font-semibold'>{item.name} x {item.quantity}</h3>
-                                        <p className='text-neutral-600'>{item.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+                                        <p className='text-foreground/50'>{item.price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                                     </div>
-                                    <p className='font-semibold'>{(item.price * item.quantity).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+                                    <p className='font-semibold '>{(item.price * item.quantity).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                                 </div>
                             </div>
                             <Button variant="ghost" onClick={() => removeItem(item.id)} className='w-min'>
@@ -40,16 +40,17 @@ export default function CartList() {
                 ))}
             </ul>
             <div className='flex flex-col items-center'>
-                <div className='flex flex-row justify-between w-full text-neutral-600'>
+                <div className='flex flex-row justify-between w-full'>
                     <p>Subtotal</p>
                     <p>{items.reduce((acc, item) => acc + item.price * item.quantity, 0).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                 </div>
-                <div className='flex flex-row justify-between w-full text-neutral-600'>
+                <div className='flex flex-row justify-between w-full'>
                     <p>IVA</p>
                     <p>{(items.reduce((acc, item) => acc + item.price * item.quantity, 0) * 0.19).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                 </div>
-                <Separator className='my-2' />
-                <div className='flex flex-row justify-between w-full text-black font-bold'>
+                <Separator className="my-4 bg-foreground/15" />
+
+                <div className='flex flex-row justify-between w-full font-bold'>
                     <p>Total</p>
                     <p>{(items.reduce((acc, item) => acc + item.price * item.quantity, 0) * 1.19).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
                 </div>
