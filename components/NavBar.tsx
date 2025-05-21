@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
-import { Check, ChevronUp, GitCompareArrows, Home, LogOut, LogOutIcon, Package, User, User2 } from "lucide-react";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "./ui/sidebar";
+import { Check, ChevronUp, CreditCard, GitCompareArrows, Home, LogOut, LogOutIcon, Package, User, User2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { DropdownMenuSub } from "@radix-ui/react-dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ import { Company } from "@/types/Company";
 export default function NavBar() {
 
     const { data: session, update } = useSession()
+    const { open } = useSidebar()
 
     const items = [
         {
@@ -21,6 +22,11 @@ export default function NavBar() {
             label: "Productos",
             href: "/home/products",
             icon: Package
+        },
+        {
+            label: "Transacciones",
+            href: "/home/transactions",
+            icon: CreditCard
         }
     ]
 
@@ -37,11 +43,16 @@ export default function NavBar() {
         await signOut()
     }
 
+
     return (
         <Sidebar collapsible="icon">
-            {/* <SidebarHeader>
-                <h1>Cajix</h1>
-            </SidebarHeader> */}
+            <SidebarHeader className="group relative flex justify-center items-center h-[60px] bg-background-soft">
+                <h1 className="text-4xl font-extrabold font-mono bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[2px_2px_0px_rgba(0,0,0,0.5)] select-none transition-all duration-300">
+                    {open ? "CAJIX" : "C"}
+
+                </h1>
+            </SidebarHeader>
+
             <SidebarContent className="bg-background-soft">
                 <SidebarGroup>
                     <SidebarMenu>
@@ -111,3 +122,5 @@ export default function NavBar() {
         </Sidebar >
     )
 }
+
+

@@ -13,7 +13,7 @@ export default async function Home() {
     return (
 
         <>
-            <section className="flex-[0.7] h-dvh">
+            <section className="flex-[0.6] h-dvh pr-6">
                 <header className="flex justify-between items-center my-7 px-3">
                     <h2 className="text-foreground font-semibold text-xl">Lectura y selección de productos</h2>
                     <Link href="/home/products" className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-all duration-300">
@@ -29,7 +29,7 @@ export default async function Home() {
                     <ProductTabs />
                 </article>
             </section>
-            <section className="flex-[0.3] flex flex-col h-dvh px-2 shadow-md bg-background-soft rounded-l-3xl">
+            <section className="flex-[0.4] flex flex-col h-dvh px-2 shadow-lg shadow-foreground/25 bg-background-soft rounded-l-xl">
                 <header className="flex justify-between items-center text-tertiary-foreground my-7 px-3">
                     <h2>{session?.user?.firstName} {session?.user?.lastName}</h2>
                     <DropdownMenu>
