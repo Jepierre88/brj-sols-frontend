@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin } from "next-auth"
+import NextAuth, { CredentialsSignin, AuthError } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import axios, { AxiosError } from "axios"
 import { CONSTANTS } from "@/config/constants"
@@ -9,12 +9,10 @@ import { Session } from "next-auth"
 
 class NotFoundCredentials extends CredentialsSignin {
     code = "Credenciales no encontradas"
-    status = 401
 }
 
-class InternalServerError extends CredentialsSignin {
+class ServerError extends CredentialsSignin {
     code = "Error interno del servidor"
-    status = 500
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -39,7 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     if (err instanceof AxiosError) {
                         throw handleError(err)
                     } else {
-                        throw new InternalServerError()
+                        throw new ServerError()
                     }
 
                 })
@@ -66,11 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 })
 
 
-const handleError = (error: AxiosError): NotFoundCredentials | InternalServerError => {
+const handleError = (error: AxiosError): NotFoundCredentials | ServerError => {
     if (error.status === 401) {
         return new NotFoundCredentials()
     } else {
-        return new InternalServerError()
+        return new ServerError()
     }
 
 }

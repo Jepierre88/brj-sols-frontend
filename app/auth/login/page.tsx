@@ -22,7 +22,7 @@ export default function Login() {
             redirect: false,
         })
         if (response?.error) {
-            console.log(response.error)
+            console.log(response)
             toast.error(response.code)
             return
         }
