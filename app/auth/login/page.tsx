@@ -1,5 +1,5 @@
 'use client'
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { loginSchema } from "@/schemas/auth/login"
 import { signIn } from "next-auth/react"
@@ -9,12 +9,15 @@ import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { z } from "zod"
 export default function Login() {
+
+    type LoginSchemaType = z.infer<typeof loginSchema>
 
     const router = useRouter()
 
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: LoginSchemaType) => {
 
         const response = await signIn("credentials", {
             email: data.email,

@@ -1,12 +1,9 @@
-import NextAuth, { CredentialsSignin, AuthError } from "next-auth"
+import NextAuth, { CredentialsSignin } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import axios, { AxiosError } from "axios"
-import { CONSTANTS } from "@/config/constants"
 import { loginSchema } from "@/schemas/auth/login"
 import { JWT } from "next-auth/jwt"
 import { Session } from "next-auth"
 import { Company } from "@/types/Company"
-
 
 class NotFoundCredentials extends CredentialsSignin {
     code = "Credenciales no encontradas"
@@ -16,10 +13,7 @@ class ServerError extends CredentialsSignin {
     code = "Error interno del servidor"
 }
 
-
-
 declare module "next-auth" {
-
     interface User {
         token: string
         firstName: string
@@ -32,8 +26,8 @@ declare module "next-auth" {
         user: User
         selectedCompany: Company
     }
-
 }
+
 declare module "next-auth/jwt" {
     interface JWT {
         user: {
@@ -48,6 +42,38 @@ declare module "next-auth/jwt" {
     }
 }
 
+// Datos mockeados para desarrollo
+const mockUser = {
+    token: "mock-jwt-token-12345",
+    firstName: "Juan",
+    lastName: "Pérez",
+    email: "juan.perez@example.com",
+    cellPhoneNumber: "+57 300 123 4567",
+    companies: [
+        {
+            id: "1",
+            nameCompany: "Empresa Principal",
+            address: "Calle 123 #45-67, Bogotá, Colombia",
+            description: "Empresa líder en tecnología y soluciones digitales",
+            urlImage: "https://via.placeholder.com/150/4F46E5/FFFFFF?text=EP"
+        },
+        {
+            id: "2",
+            nameCompany: "Compañía Secundaria",
+            address: "Avenida 78 #90-12, Medellín, Colombia",
+            description: "Especialistas en consultoría empresarial",
+            urlImage: "https://via.placeholder.com/150/10B981/FFFFFF?text=CS"
+        },
+        {
+            id: "3",
+            nameCompany: "Startup Innovadora",
+            address: "Carrera 15 #25-30, Cali, Colombia",
+            description: "Desarrollo de software y aplicaciones móviles",
+            urlImage: "https://via.placeholder.com/150/F59E0B/FFFFFF?text=SI"
+        }
+    ]
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         CredentialsProvider({
@@ -56,35 +82,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials, request) {
-
-                const { email, password } = loginSchema.parse(credentials)
-                let user = null
-                await axios.post(`${CONSTANTS.API_URL}/auth/login`, {
-                    email,
-                    password
-                }).then(res => {
-                    user = res.data
-                    user.companies = [
-                        ...user.companies,
-                        {
-                            id: "2",
-                            nameCompany: "Company 1",
-                            address: "Address 1",
-                            description: "Description 1",
+            async authorize(credentials) {
+                try {
+                    const { email, password } = loginSchema.parse(credentials)
+                    
+                    // Simular validación de credenciales
+                    if (email === "admin@example.com" && password === "admin123") {
+                        console.log("✅ Login exitoso con datos mockeados")
+                        return mockUser
+                    } else if (email === "user@example.com" && password === "user123") {
+                        console.log("✅ Login exitoso con usuario regular")
+                        return {
+                            ...mockUser,
+                            firstName: "María",
+                            lastName: "García",
+                            email: "maria.garcia@example.com",
+                            cellPhoneNumber: "+57 310 987 6543"
                         }
-                    ]
-                    console.log(user)
-                }).catch(err => {
-                    if (err instanceof AxiosError) {
-                        console.log(err.response?.data)
-                        throw handleError(err)
                     } else {
-                        throw new ServerError()
+                        console.log("❌ Credenciales inválidas")
+                        throw new NotFoundCredentials()
                     }
-
-                })
-                return user
+                } catch (error) {
+                    console.log("❌ Error en la validación:", error)
+                    throw new ServerError()
+                }
             },
         })
     ],
@@ -104,21 +126,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return token
         },
         async session({ session, token }: { session: Session, token: JWT }): Promise<Session> {
-            session.user = token.user as any
+            session.user = token.user
             session.selectedCompany = token.selectedCompany
             return session
         },
     },
 })
-
-
-const handleError = (error: AxiosError): NotFoundCredentials | ServerError => {
-    if (error.status === 401) {
-        return new NotFoundCredentials()
-    } else if (error.status === 500) {
-        return new ServerError()
-    } else {
-        return new NotFoundCredentials()
-    }
-
-}
